@@ -46,6 +46,18 @@ MediWave is an enterprise-grade pharmacy inventory and returns management platfo
    npm run dev
    ```
 
+Backend environment variables:
+
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/mediwave
+JWT_SECRET=replace-with-a-long-random-secret
+JWT_EXPIRES_IN=7d
+CORS_ORIGIN=http://localhost:5173
+```
+
+For deployment, set `MONGODB_URI` to your MongoDB Atlas connection string. The backend also accepts `MONGO_URI`, `MONGO_URL`, or `DATABASE_URL`, but `MONGODB_URI` is the recommended name.
+
 ### Frontend
 
 1. Navigate to `frontend/`
@@ -59,6 +71,46 @@ MediWave is an enterprise-grade pharmacy inventory and returns management platfo
    ```bash
    npm run dev
    ```
+
+Frontend environment variables:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000/api
+```
+
+For Vercel, set `VITE_API_BASE_URL` to your deployed backend API URL, for example `https://your-backend-url.onrender.com/api`.
+
+## Deployment Checklist
+
+1. Deploy the backend first on Render, Railway, or another Node host.
+2. Add backend env vars: `MONGODB_URI`, `JWT_SECRET`, `JWT_EXPIRES_IN`, and `CORS_ORIGIN`.
+3. Set `CORS_ORIGIN` to your Vercel frontend URL when you want to restrict browser access, for example `https://mediwave-project.vercel.app`.
+4. Deploy the frontend on Vercel from the `frontend/` folder.
+5. Add frontend env var `VITE_API_BASE_URL` with the backend URL ending in `/api`.
+
+### MongoDB Atlas Setup
+
+1. Create a MongoDB Atlas cluster.
+2. Create a database user and password under Database Access.
+3. Add `0.0.0.0/0` under Network Access while deploying, or add your backend host's outbound IP if your provider gives one.
+4. Copy the Node.js connection string from Atlas.
+5. Replace `<password>` with your database user's password and use database name `mediwave`:
+   ```env
+   MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/mediwave?retryWrites=true&w=majority
+   ```
+6. Put that value in your backend hosting service environment variables. Do not put it in the frontend or commit it to Git.
+
+After the backend deploys, open:
+
+```text
+https://your-backend-url/api/health
+```
+
+Then set this in Vercel for the frontend:
+
+```env
+VITE_API_BASE_URL=https://your-backend-url/api
+```
 
 ## API Documentation
 
