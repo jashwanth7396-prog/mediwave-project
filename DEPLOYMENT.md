@@ -10,6 +10,7 @@ Set these environment variables:
 
 ```env
 MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/mediwave?retryWrites=true&w=majority
+MONGODB_DB_NAME=mediwave
 JWT_SECRET=replace-with-a-long-random-secret
 JWT_EXPIRES_IN=7d
 CORS_ORIGIN=https://mediwave-project.vercel.app

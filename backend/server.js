@@ -21,17 +21,34 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const allowedOrigins = (process.env.CORS_ORIGIN || '')
+const defaultCorsOrigins = [
+  'http://localhost:5173',
+  'https://mediwave-project.vercel.app'
+];
+const allowedOrigins = (process.env.CORS_ORIGIN || defaultCorsOrigins.join(','))
   .split(',')
   .map((origin) => origin.trim())
   .filter(Boolean);
+const isAllowedVercelOrigin = (origin) => {
+  try {
+    const { hostname, protocol } = new URL(origin);
+    return protocol === 'https:' && hostname.endsWith('.vercel.app');
+  } catch {
+    return false;
+  }
+};
 
 connectDB();
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.length === 0 || allowedOrigins.includes(origin)) {
+      if (
+        !origin ||
+        allowedOrigins.length === 0 ||
+        allowedOrigins.includes(origin) ||
+        isAllowedVercelOrigin(origin)
+      ) {
         callback(null, true);
         return;
       }

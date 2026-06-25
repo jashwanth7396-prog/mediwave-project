@@ -51,6 +51,7 @@ Backend environment variables:
 ```env
 PORT=5000
 MONGODB_URI=mongodb+srv://USER:PASSWORD@cluster.mongodb.net/mediwave
+MONGODB_DB_NAME=mediwave
 JWT_SECRET=replace-with-a-long-random-secret
 JWT_EXPIRES_IN=7d
 CORS_ORIGIN=http://localhost:5173
@@ -83,7 +84,7 @@ For Vercel, set `VITE_API_BASE_URL` to your deployed backend API URL, for exampl
 ## Deployment Checklist
 
 1. Deploy the backend first on Render, Railway, or another Node host.
-2. Add backend env vars: `MONGODB_URI`, `JWT_SECRET`, `JWT_EXPIRES_IN`, and `CORS_ORIGIN`.
+2. Add backend env vars: `MONGODB_URI`, `MONGODB_DB_NAME`, `JWT_SECRET`, `JWT_EXPIRES_IN`, and `CORS_ORIGIN`.
 3. Set `CORS_ORIGIN` to your Vercel frontend URL when you want to restrict browser access, for example `https://mediwave-project.vercel.app`.
 4. Deploy the frontend on Vercel from the `frontend/` folder.
 5. Add frontend env var `VITE_API_BASE_URL` with the backend URL ending in `/api`.

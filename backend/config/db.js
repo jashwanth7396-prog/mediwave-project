@@ -28,7 +28,9 @@ const connectDB = async () => {
       );
     }
 
-    const conn = await mongoose.connect(mongoUri);
+    const conn = await mongoose.connect(mongoUri, {
+      dbName: process.env.MONGODB_DB_NAME || 'mediwave'
+    });
 
     console.log(`MongoDB connected: ${conn.connection.host}/${conn.connection.name}`);
   } catch (error) {
